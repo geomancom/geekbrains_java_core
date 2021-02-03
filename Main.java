@@ -15,9 +15,9 @@ public class Main {
     public static void main(String[] args) {
         try {
             if (myArray.length == 4 && myArray[0].length == 4) {
-                String[][] rightArray = fillMyArray(myArray);
-                showMyArray(rightArray);
-                int sum = sumMyArray(rightArray);
+                String[][] correctArray = fillMyArray(myArray);
+                showMyArray(correctArray);
+                int sum = sumMyArray(correctArray);
                 if (ERROR_TEXT) {
                     System.out.println("Сумма элементов массива до возникновения ошибки равна: "+sum);
                 }
@@ -30,8 +30,6 @@ public class Main {
             }
         } catch (MyArraySizeException e) {
             System.out.println("Входящий массив myArray не является массивом 4х4");
-        } catch (MyArrayDataException e) {
-            System.out.println("Входящий массив myArray содержит не только числа, пожалуйста в настройках ERROR_TEXT  укажите false");
         }
 
     }
@@ -49,47 +47,33 @@ public class Main {
         return rightArray;
     }
 
-    private static void showMyArray(String[][] rightArray) {
+    private static void showMyArray(String[][] correctArray) {
         System.out.println("Был сгенирированн следующий массив:");
         for (int i = 0; i < SIZE_HIGHT; i++) {
             for (int j = 0; j < SIZE_WIDTH; j++) {
-                System.out.print(rightArray[i][j]+" ");
+                System.out.print(correctArray[i][j]+" ");
             }
             System.out.println();
         }
         System.out.println();
     }
 
-    public static int sumMyArray(String[][] rightArray){
+    public static int sumMyArray(String[][] correctArray){
         int result = 0;
+        String message = "";
         try {
             for (int i = 0; i < SIZE_HIGHT; i++) {
                 for (int j = 0; j < SIZE_WIDTH; j++) {
-                    if (isInt(rightArray[i][j])) {
-                        result = result + Integer.parseInt(rightArray[i][j]);
-                    }
-                    else{
-                        System.out.println("Входящий массив myArray содержит не только числа проблема выявлена в массиве rightArray["+i+"]["+j+"]");
-                        throw new MyArrayDataException();
-                    }
+                    message ="rightArray["+i+"]["+j+"]";
+                    result += Integer.parseInt(correctArray[i][j]);                     
                 }
             }
-        } catch (MyArrayDataException e) {
-            System.out.println("Входящий массив myArray содержит не только числа, пожалуйста в настройках ERROR_TEXT  укажите false");
-        }
-        finally {
+        }catch (NumberFormatException e) {
+            throw new MyArrayDataException("Входящий массив myArray содержит не только числа проблема выявлена в массиве "+message+" пожалуйста в настройках ERROR_TEXT укажите false");
+        } finally {
             return result;
         }
-
     }
 
-    private static boolean isInt(String s) throws NumberFormatException {
-        try {
-            Integer.parseInt(s);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
 
 }

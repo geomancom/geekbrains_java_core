@@ -28,8 +28,6 @@ public class Box<T extends Fruit> implements AddFruit, WhatInBox {
     }
 
     public void replaceFruitsToMaxBox(Box<?> minBox) {
-        //maxBox.box.addAll(this.box);
-        //this.box.clear();
         this.box.get(0).addFruit(minBox.getWeight());
         minBox.box.get(0).minusFruit(minBox.getWeight());
     }
